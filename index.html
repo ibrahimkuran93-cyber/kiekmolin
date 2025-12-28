@@ -3965,6 +3965,10 @@
                     <input type="email" class="form-input" id="newRestaurantEmail" placeholder="info@restaurant.de">
                 </div>
                 <div class="form-group">
+                    <label class="form-label"><span class="label-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>Webseite</label>
+                    <input type="url" class="form-input" id="newRestaurantWebsite" placeholder="https://www.restaurant-name.de">
+                </div>
+                <div class="form-group">
                     <label class="form-label"><span class="label-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>Straße + Hausnummer</label>
                     <input type="text" class="form-input" id="newRestaurantStreet" placeholder="Hafenstraße 12">
                 </div>
@@ -3975,13 +3979,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Ort</label>
-                        <select class="form-select" id="newRestaurantCity">
-                            <option value="Greetsiel">Greetsiel</option>
-                            <option value="Norddeich">Norddeich</option>
-                            <option value="Norden">Norden</option>
-                            <option value="Aurich">Aurich</option>
-                            <option value="Emden">Emden</option>
-                        </select>
+                        <input type="text" class="form-input" id="newRestaurantCity" placeholder="z.B. Greetsiel, Norden, Aurich...">
                     </div>
                 </div>
                 <div class="form-group">
@@ -3990,25 +3988,9 @@
                     <small style="color: var(--text-secondary); font-size: 11px;">Öffne Google Maps, suche das Restaurant, klicke "Teilen" → Link kopieren</small>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Küche</label>
-                    <select class="form-select" id="newRestaurantCuisine">
-                        <option value="fisch">Fisch & Meeresfrüchte</option>
-                        <option value="deutsch">Deutsch</option>
-                        <option value="italienisch">Italienisch</option>
-                        <option value="cafe">Café</option>
-                        <option value="imbiss">Imbiss</option>
-                        <option value="asiatisch">Asiatisch</option>
-                        <option value="griechisch">Griechisch</option>
-                        <option value="tuerkisch">Türkisch / Döner</option>
-                        <option value="bar">Bar / Kneipe</option>
-                        <option value="shisha">Shisha Bar</option>
-                        <option value="steakhouse">Steakhouse</option>
-                        <option value="burger">Burger</option>
-                        <option value="indisch">Indisch</option>
-                        <option value="mexikanisch">Mexikanisch</option>
-                        <option value="eisdiele">Eisdiele</option>
-                        <option value="baeckerei">Bäckerei</option>
-                    </select>
+                    <label class="form-label">Restaurant-Typ / Küche *</label>
+                    <input type="text" class="form-input" id="newRestaurantCuisine" required placeholder="z.B. Italienisch, Fischrestaurant, Café, Döner, Steakhouse...">
+                    <small style="color: var(--text-secondary); font-size: 11px;">Gib selbst ein was für ein Restaurant es ist</small>
                 </div>
                 
                 <h4 style="margin: 16px 0 12px; color: var(--dark);">Social Media</h4>
@@ -4037,44 +4019,96 @@
                 <p style="font-size: 11px; color: var(--slate); margin-top: -8px; margin-bottom: 12px;">Tipp: Öffne Google Maps → Restaurant suchen → Bewertung & Anzahl ablesen</p>
                 
                 <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--sand);">
+                <h4 style="margin-bottom: 12px; color: var(--dark);">✨ Eigenschaften (wie bei Google)</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureDogFriendly" style="width: 16px; height: 16px;">
+                        <span>🐕 Hundefreundlich</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureKidFriendly" style="width: 16px; height: 16px;">
+                        <span>👶 Kinderfreundlich</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureVegetarian" style="width: 16px; height: 16px;">
+                        <span>🥗 Vegetarisch</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureVegan" style="width: 16px; height: 16px;">
+                        <span>🌱 Vegan</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureWheelchair" style="width: 16px; height: 16px;">
+                        <span>♿ Barrierefrei</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureParking" style="width: 16px; height: 16px;">
+                        <span>🅿️ Parkplätze</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureCard" style="width: 16px; height: 16px;">
+                        <span>💳 Kartenzahlung</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureWifi" style="width: 16px; height: 16px;">
+                        <span>📶 WLAN</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureTerrace" style="width: 16px; height: 16px;">
+                        <span>🌳 Terrasse</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureReservation" style="width: 16px; height: 16px;">
+                        <span>📅 Reservierung</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureTakeaway" style="width: 16px; height: 16px;">
+                        <span>🥡 Zum Mitnehmen</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureDelivery" style="width: 16px; height: 16px;">
+                        <span>🚗 Lieferservice</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureLiveMusic" style="width: 16px; height: 16px;">
+                        <span>🎵 Live-Musik</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--bg-secondary); border-radius: 8px; cursor: pointer; font-size: 13px;">
+                        <input type="checkbox" id="featureOutdoor" style="width: 16px; height: 16px;">
+                        <span>☀️ Außenbereich</span>
+                    </label>
+                </div>
+                
+                <hr style="margin: 16px 0; border: none; border-top: 1px solid var(--sand);">
                 
                 <div class="form-group">
-                    <label class="form-label"><span class="label-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></span>Restaurant-Bild</label>
+                    <label class="form-label"><span class="label-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></span>Restaurant-Bilder (mehrere möglich)</label>
                     
-                    <!-- Bild Vorschau -->
-                    <div id="imagePreviewContainer" style="display: none; margin-bottom: 12px; position: relative;">
-                        <img id="imagePreview" src="" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px;">
-                        <button type="button" onclick="clearImagePreview()" style="position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.6); border: none; color: white; cursor: pointer; font-size: 16px;">×</button>
-                    </div>
+                    <!-- Multi Bild Vorschau -->
+                    <div id="multiImagePreview" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;"></div>
                     
                     <!-- Upload Buttons -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                         <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--bg-secondary); border: 2px dashed var(--border-color); border-radius: 12px; cursor: pointer; color: var(--text-primary); font-weight: 500; transition: all 0.2s;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                <polyline points="21 15 16 10 5 21"></polyline>
-                            </svg>
-                            📷 Foto wählen
-                            <input type="file" accept="image/*" onchange="handleImageUpload(event)" style="display: none;">
+                            📷 Bilder wählen
+                            <input type="file" accept="image/*" multiple onchange="handleMultiImageUpload(event)" style="display: none;">
                         </label>
                         <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; background: var(--bg-secondary); border: 2px dashed var(--border-color); border-radius: 12px; cursor: pointer; color: var(--text-primary); font-weight: 500; transition: all 0.2s;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                <circle cx="12" cy="13" r="4"></circle>
-                            </svg>
                             📱 Kamera
-                            <input type="file" accept="image/*" capture="environment" onchange="handleImageUpload(event)" style="display: none;">
+                            <input type="file" accept="image/*" capture="environment" onchange="handleMultiImageUpload(event)" style="display: none;">
                         </label>
                     </div>
                     
                     <!-- URL Eingabe (Alternative) -->
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                         <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-                        <span style="color: var(--text-secondary); font-size: 12px;">oder URL eingeben</span>
+                        <span style="color: var(--text-secondary); font-size: 12px;">oder URLs eingeben</span>
                         <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
                     </div>
-                    <input type="url" class="form-input" id="newRestaurantImage" placeholder="https://..." oninput="previewImageFromUrl(this.value)">
+                    <input type="url" class="form-input" id="newRestaurantImage" placeholder="Bild-URL 1" style="margin-bottom: 8px;">
+                    <input type="url" class="form-input" id="newRestaurantImage2" placeholder="Bild-URL 2 (optional)" style="margin-bottom: 8px;">
+                    <input type="url" class="form-input" id="newRestaurantImage3" placeholder="Bild-URL 3 (optional)">
                     <small style="color: var(--text-secondary); font-size: 11px; margin-top: 4px; display: block;">Tipp: Auf Google Maps → Restaurant → Fotos → Bild öffnen → Rechtsklick → Bildadresse kopieren</small>
                 </div>
                 <div class="form-group">
@@ -12488,6 +12522,48 @@ function handleImageUpload(event) {
     reader.readAsDataURL(file);
 }
 
+// Multi Image Upload
+let uploadedImages = [];
+
+function handleMultiImageUpload(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    
+    Array.from(files).forEach(file => {
+        if (file.size > 5 * 1024 * 1024) {
+            showToast('Bild zu groß (max. 5MB)', 'error');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            compressImage(e.target.result, 800, 0.8, function(compressedBase64) {
+                uploadedImages.push(compressedBase64);
+                renderMultiImagePreview();
+                showToast(`${uploadedImages.length} Bild(er) geladen`, 'success');
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderMultiImagePreview() {
+    const container = document.getElementById('multiImagePreview');
+    if (!container) return;
+    
+    container.innerHTML = uploadedImages.map((img, index) => `
+        <div style="position: relative; width: 80px; height: 80px;">
+            <img src="${img}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            <button type="button" onclick="removeUploadedImage(${index})" style="position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: #ff4444; border: 2px solid white; color: white; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+    `).join('');
+}
+
+function removeUploadedImage(index) {
+    uploadedImages.splice(index, 1);
+    renderMultiImagePreview();
+}
+
 function compressImage(base64, maxWidth, quality, callback) {
     const img = new Image();
     img.onload = function() {
@@ -16791,7 +16867,7 @@ window.addEventListener('appinstalled', () => {
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">Kontakt</h3>
             <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px;">
-                E-Mail: <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>
+                E-Mail: <a href="/cdn-cgi/l/email-protection#056c6b636a456e6c606e686a696c6b2b6160" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="cda4a3aba28da6a4a8a6a0a2a1a4a3e3a9a8">[email&#160;protected]</span></a>
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">Verantwortlich für den Inhalt</h3>
@@ -16838,7 +16914,7 @@ window.addEventListener('appinstalled', () => {
                     </div>
                     <div>
                         <div style="font-size: 12px; color: var(--text-secondary);">E-Mail</div>
-                        <a href="mailto:info@kiekmolin.de" style="color: var(--primary); font-weight: 600; text-decoration: none;">info@kiekmolin.de</a>
+                        <a href="/cdn-cgi/l/email-protection#8fe6e1e9e0cfe4e6eae4e2e0e3e6e1a1ebea" style="color: var(--primary); font-weight: 600; text-decoration: none;"><span class="__cf_email__" data-cfemail="0b62656d644b60626e606664676265256f6e">[email&#160;protected]</span></a>
                     </div>
                 </div>
                 
@@ -16884,7 +16960,7 @@ window.addEventListener('appinstalled', () => {
                 Kurani Design<br>
                 Waller Weg 37<br>
                 26624 Südbrookmerland<br>
-                E-Mail: <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>
+                E-Mail: <a href="/cdn-cgi/l/email-protection#ed84838b82ad868488868082818483c38988" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="8ee7e0e8e1cee5e7ebe5e3e1e2e7e0a0eaeb">[email&#160;protected]</span></a>
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">3. Welche Daten wir erheben</h3>
@@ -16901,7 +16977,7 @@ window.addEventListener('appinstalled', () => {
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">5. Ihre Rechte</h3>
             <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px; font-size: 14px;">
-                Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontaktieren Sie uns unter <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>.
+                Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontaktieren Sie uns unter <a href="/cdn-cgi/l/email-protection#2841464e476843414d434547444146064c4d" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="2e474048416e45474b454341424740004a4b">[email&#160;protected]</span></a>.
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">6. Wetter-Daten</h3>
@@ -17696,9 +17772,3 @@ window.addEventListener('appinstalled', () => {
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">6. Haftung</h3>
             <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px; font-size: 14px;">
-                Der Anbieter haftet nicht für entgangene Umsätze oder Schäden, die durch technische Störungen entstehen. Die Plattform wird "wie besehen" bereitgestellt.
-            </p>
-            
-            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">7. Datenschutz</h3>
-            <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px; font-size: 14px;">
-                Beide Parteien verpflichten sich zur Einhaltung der DSGVO. Kundendaten werden nur zu

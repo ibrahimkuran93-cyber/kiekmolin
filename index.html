@@ -893,6 +893,45 @@
             position: relative;
             overflow: hidden;
         }
+        
+        /* Desktop: App zentriert, breiter aber noch App-like */
+        @media (min-width: 768px) {
+            body {
+                background: #1a1a1a;
+            }
+            
+            .guest-view {
+                max-width: 520px;
+                box-shadow: 0 0 80px rgba(0,0,0,0.3);
+            }
+            
+            .guest-header {
+                padding: 70px 28px 110px;
+            }
+            
+            .bottom-nav {
+                max-width: 520px;
+            }
+        }
+        
+        /* Große Bildschirme - breiter */
+        @media (min-width: 1200px) {
+            .guest-view {
+                max-width: 600px;
+            }
+            
+            .bottom-nav {
+                max-width: 600px;
+            }
+            
+            .guest-header {
+                padding: 80px 32px 120px;
+            }
+            
+            .restaurant-card {
+                padding: 18px;
+            }
+        }
 
         .guest-view.hidden {
             display: none;
@@ -1505,12 +1544,30 @@
         /* Favorites View */
         .favorites-view {
             display: none;
-            padding: 20px;
+            padding: 0;
             padding-bottom: 100px;
         }
 
         .favorites-view.active {
             display: block;
+        }
+        
+        .favorites-view .guest-header {
+            border-radius: 0;
+            margin: 0;
+        }
+        
+        .favorites-view .section,
+        .favorites-view .quick-stats,
+        .favorites-view .search-bar,
+        .favorites-view .filter-chips {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .favorites-view .quick-stats {
+            margin: 0;
+            padding-top: 20px;
         }
 
         .favorites-header {
@@ -4020,14 +4077,14 @@
         
         <!-- Quick Actions Bar -->
         <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 0 20px; margin-top: -25px; margin-bottom: 16px; position: relative; z-index: 50;">
-            <button onclick="openModal('notificationModal');" style="background: var(--bg-card); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15); position: relative;" title="Benachrichtigungen">
+            <button onclick="openModal('notificationModal');" style="background: var(--bg-card); color: var(--text-primary); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15); position: relative;" title="Benachrichtigungen">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                 </svg>
                 <span id="notificationBadge" class="notification-badge">3</span>
             </button>
-            <button onclick="openModal('themeModalSimple');" style="background: var(--bg-card); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15);" title="Design ändern">
+            <button onclick="openModal('themeModalSimple');" style="background: var(--bg-card); color: var(--text-primary); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15);" title="Design ändern">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
                     <circle cx="12" cy="12" r="5"/>
                     <line x1="12" y1="1" x2="12" y2="3"/>
@@ -4040,7 +4097,7 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                 </svg>
             </button>
-            <button onclick="openModal('profileModal');" id="profileBtn" style="background: var(--bg-card); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15);" title="Profil">
+            <button onclick="openModal('profileModal');" id="profileBtn" style="background: var(--bg-card); color: var(--text-primary); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.15);" title="Profil">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" id="profileIcon">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     <circle cx="12" cy="7" r="4"/>
@@ -4069,7 +4126,7 @@
         </div>
 
         <!-- Wetter Widget - Kompakt mit Klick für Details -->
-        <div id="weatherWidget" onclick="openModal('weatherDetailModal')" style="margin: 24px 20px 16px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
+        <div id="weatherWidget" onclick="openWeatherDetail()" style="margin: 24px 20px 16px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
             <!-- Hintergrund mit Gradient -->
             <div id="weatherBg" style="background: linear-gradient(180deg, #4A90D9 0%, #67B8DE 50%, #8BC4E8 100%); padding: 16px 20px; position: relative;">
                 <div style="display: flex; align-items: center; justify-content: space-between; color: white;">
@@ -4144,15 +4201,15 @@
                 </svg>
                 <span><strong>Perfekt jetzt:</strong> Hafenrundfahrt, Fischrestaurants am Wasser</span>
             </div>
-            <div style="margin-top: 8px; padding: 8px 10px; background: rgba(255,200,0,0.15); border-radius: 8px; font-size: 11px; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 6px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" width="12" height="12" style="flex-shrink: 0;">
+            <div style="margin-top: 4px; padding: 6px 10px; background: rgba(255,200,0,0.15); border-radius: 6px; font-size: 10px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 5px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" width="10" height="10" style="flex-shrink: 0;">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
                 Ungefähre Angaben – vor Ort prüfen
             </div>
         </div>
 
-        <div class="quick-stats">
+        <div class="quick-stats" style="margin-top: 20px;">
             <div class="stat-card">
                 <div class="stat-number" id="statRestaurants">0</div>
                 <div class="stat-label">Restaurants</div>
@@ -8666,16 +8723,24 @@ function updateWeatherUI(temp, desc, wind, humidity, high, low, location, isDay)
     const highEl = document.getElementById('weatherHigh');
     const lowEl = document.getElementById('weatherLow');
     const locEl = document.getElementById('weatherLocation');
-    const summaryEl = document.getElementById('weatherSummary');
     
     if (tempEl) tempEl.textContent = temp + '°';
     if (descEl) descEl.textContent = desc;
     if (highEl) highEl.textContent = high + '°';
     if (lowEl) lowEl.textContent = low + '°';
     if (locEl) locEl.textContent = location.toUpperCase();
-    if (summaryEl) summaryEl.textContent = `${desc}. Wind mit bis zu ${wind} km/h.`;
     
-    // Modal
+    // Speichere aktuelle Wetter-Daten global
+    window.currentWeatherData = { temp, desc, wind, humidity, high, low, location, isDay };
+    
+    // Modal auch aktualisieren
+    syncWeatherModal();
+}
+
+function syncWeatherModal() {
+    const data = window.currentWeatherData;
+    if (!data) return;
+    
     const modalTemp = document.getElementById('weatherModalTemp');
     const modalDesc = document.getElementById('weatherModalDesc');
     const modalHigh = document.getElementById('weatherModalHigh');
@@ -8685,14 +8750,21 @@ function updateWeatherUI(temp, desc, wind, humidity, high, low, location, isDay)
     const modalHumidity = document.getElementById('weatherModalHumidity');
     const modalSummary = document.getElementById('weatherModalSummary');
     
-    if (modalTemp) modalTemp.textContent = temp + '°';
-    if (modalDesc) modalDesc.textContent = desc;
-    if (modalHigh) modalHigh.textContent = high + '°';
-    if (modalLow) modalLow.textContent = low + '°';
-    if (modalLoc) modalLoc.textContent = location.toUpperCase();
-    if (modalWind) modalWind.textContent = wind + ' km/h';
-    if (modalHumidity) modalHumidity.textContent = humidity + '%';
-    if (modalSummary) modalSummary.textContent = `${desc}. Wind mit bis zu ${wind} km/h.`;
+    if (modalTemp) modalTemp.textContent = data.temp + '°';
+    if (modalDesc) modalDesc.textContent = data.desc;
+    if (modalHigh) modalHigh.textContent = data.high + '°';
+    if (modalLow) modalLow.textContent = data.low + '°';
+    if (modalLoc) modalLoc.textContent = data.location.toUpperCase();
+    if (modalWind) modalWind.textContent = data.wind + ' km/h';
+    if (modalHumidity) modalHumidity.textContent = data.humidity + '%';
+    if (modalSummary) modalSummary.textContent = `${data.desc}. Wind mit bis zu ${data.wind} km/h.`;
+}
+
+function openWeatherDetail() {
+    // Modal Daten synchronisieren
+    syncWeatherModal();
+    // Modal öffnen
+    openModal('weatherDetailModal');
 }
 
 function updateHourlyForecast(hourly) {
@@ -11099,11 +11171,23 @@ let groupSession = null;
 let currentGroupData = JSON.parse(localStorage.getItem('kmi_group') || 'null');
 
 function openGroupReservationModal() {
+    // Datum auf heute setzen
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('groupDate');
+    if (dateInput) {
+        dateInput.value = today;
+        dateInput.min = today;
+    }
+    
     // Prüfen ob aktive Gruppe existiert
     if (currentGroupData) {
         document.getElementById('activeGroupSection').style.display = 'block';
         document.getElementById('activeGroupName').textContent = currentGroupData.name;
-        document.getElementById('activeGroupMembers').textContent = `${currentGroupData.members?.length || 1} Teilnehmer`;
+        document.getElementById('activeGroupMembers').textContent = (currentGroupData.size || currentGroupData.members?.length || 1) + ' Personen';
+        const dateTimeEl = document.getElementById('activeGroupDateTime');
+        if (dateTimeEl && currentGroupData.formattedDate) {
+            dateTimeEl.textContent = '📅 ' + currentGroupData.formattedDate + ' um ' + currentGroupData.time + ' Uhr';
+        }
         renderGroupVoting();
     } else {
         document.getElementById('activeGroupSection').style.display = 'none';
@@ -11114,20 +11198,34 @@ function openGroupReservationModal() {
 function createNewGroup() {
     const name = document.getElementById('groupName').value || 'Meine Gruppe';
     const size = parseInt(document.getElementById('groupSize').value) || 6;
+    const date = document.getElementById('groupDate').value || new Date().toISOString().split('T')[0];
+    const time = document.getElementById('groupTime').value || '18:00';
     
     const sessionId = 'grp_' + Math.random().toString(36).substr(2, 9);
+    
+    // Datum formatieren
+    const dateObj = new Date(date);
+    const formattedDate = dateObj.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
     
     currentGroupData = {
         id: sessionId,
         name: name,
         size: size,
+        date: date,
+        time: time,
+        formattedDate: formattedDate,
         creator: localStorage.getItem('kmi_guest_name') || 'Anonym',
         members: [localStorage.getItem('kmi_guest_name') || 'Du'],
         votes: {},
+        myVotes: [],
         restaurants: [],
         createdAt: new Date().toISOString()
     };
     
+    // In localStorage speichern (für alle Teilnehmer abrufbar)
+    const savedGroups = JSON.parse(localStorage.getItem('kmi_groups') || '{}');
+    savedGroups[sessionId] = currentGroupData;
+    localStorage.setItem('kmi_groups', JSON.stringify(savedGroups));
     localStorage.setItem('kmi_group', JSON.stringify(currentGroupData));
     
     // Link teilen
@@ -11136,19 +11234,36 @@ function createNewGroup() {
     // UI aktualisieren
     document.getElementById('activeGroupSection').style.display = 'block';
     document.getElementById('activeGroupName').textContent = name;
-    document.getElementById('activeGroupMembers').textContent = '1 Teilnehmer';
+    document.getElementById('activeGroupMembers').textContent = size + ' Personen';
+    document.getElementById('activeGroupDateTime').textContent = '📅 ' + formattedDate + ' um ' + time + ' Uhr';
     
-    showToast('Gruppe erstellt!', 'success');
+    showToast('Gruppe erstellt! Teile den Link!', 'success');
     addPoints(50, 'Gruppenplaner');
 }
 
 function shareGroupLink() {
+    if (!currentGroupData) {
+        showToast('Keine Gruppe vorhanden', 'error');
+        return;
+    }
+    
     const link = `${window.location.origin}?group=${currentGroupData.id}`;
-    const text = `Hey! Lass uns zusammen essen gehen bei "Kiek mol in"! Stimm hier ab: ${link}`;
+    
+    // Text zusammenbauen
+    let text = `Hey! 🍽️\n\n`;
+    text += `Wir planen: "${currentGroupData.name || 'Gemeinsames Essen'}"\n`;
+    if (currentGroupData.formattedDate) {
+        text += `📅 ${currentGroupData.formattedDate}\n`;
+    }
+    if (currentGroupData.time) {
+        text += `🕐 ${currentGroupData.time} Uhr\n`;
+    }
+    text += `👥 ${currentGroupData.size || 6} Personen\n\n`;
+    text += `Stimm hier ab wo wir hingehen:\n${link}`;
     
     if (navigator.share) {
         navigator.share({
-            title: currentGroupData.name,
+            title: currentGroupData.name || 'Gruppenessen',
             text: text,
             url: link
         });
@@ -11160,15 +11275,29 @@ function shareGroupLink() {
 
 function renderGroupVoting() {
     const container = document.getElementById('groupVotingList');
-    if (!container || !currentGroupData) return;
+    const modalContainer = document.getElementById('groupVotingListModal');
+    if (!currentGroupData) return;
+    
+    // Gruppen-Infos im Modal anzeigen
+    const nameEl = document.getElementById('votingGroupName');
+    const infoEl = document.getElementById('votingGroupInfo');
+    const dateEl = document.getElementById('votingGroupDateTime');
+    
+    if (nameEl) nameEl.textContent = currentGroupData.name || 'Gruppenessen';
+    if (infoEl) infoEl.textContent = (currentGroupData.size || 6) + ' Personen';
+    if (dateEl && currentGroupData.formattedDate) {
+        dateEl.textContent = '📅 ' + currentGroupData.formattedDate + ' um ' + currentGroupData.time + ' Uhr';
+    }
     
     // Top 3 Restaurants vorschlagen
     const suggestions = APP_DATA.restaurants
-        .filter(r => r.freeTables >= Math.ceil(currentGroupData.size / 4))
-        .slice(0, 3);
+        .filter(r => r.freeTables >= Math.ceil((currentGroupData.size || 6) / 4))
+        .slice(0, 5);
     
     if (suggestions.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-secondary); font-size: 14px;">Keine passenden Restaurants gefunden</p>';
+        const noResults = '<p style="color: var(--text-secondary); font-size: 14px; text-align: center; padding: 20px;">Keine passenden Restaurants gefunden</p>';
+        if (container) container.innerHTML = noResults;
+        if (modalContainer) modalContainer.innerHTML = noResults;
         return;
     }
     
@@ -11178,17 +11307,17 @@ function renderGroupVoting() {
         const hasVoted = currentGroupData.myVotes?.includes(r.id);
         
         html += `
-            <div onclick="voteForRestaurant('${r.id}')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-secondary); border-radius: 10px; margin-bottom: 8px; cursor: pointer; border: 2px solid ${hasVoted ? 'var(--primary)' : 'transparent'};">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${r.image}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;">
+            <div onclick="voteForRestaurant('${r.id}')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 10px; cursor: pointer; border: 2px solid ${hasVoted ? 'var(--primary)' : 'transparent'}; transition: all 0.2s;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="${r.image}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;">
                     <div>
-                        <div style="font-weight: 600;">${r.name}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">${r.freeTables} Tische frei</div>
+                        <div style="font-weight: 600; font-size: 15px;">${r.name}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${r.cuisine || 'Restaurant'} • ${r.freeTables} Tische frei</div>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <span style="font-weight: 700; color: var(--primary);">${votes}</span>
-                    <svg viewBox="0 0 24 24" fill="${hasVoted ? 'var(--primary)' : 'none'}" stroke="var(--primary)" stroke-width="2" width="20" height="20">
+                <div style="display: flex; align-items: center; gap: 8px; background: ${hasVoted ? 'var(--primary)' : 'var(--bg-card)'}; padding: 8px 12px; border-radius: 20px;">
+                    <span style="font-weight: 700; color: ${hasVoted ? 'white' : 'var(--primary)'}; font-size: 16px;">${votes}</span>
+                    <svg viewBox="0 0 24 24" fill="${hasVoted ? 'white' : 'none'}" stroke="${hasVoted ? 'white' : 'var(--primary)'}" stroke-width="2" width="18" height="18">
                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
                     </svg>
                 </div>
@@ -11196,7 +11325,8 @@ function renderGroupVoting() {
         `;
     });
     
-    container.innerHTML = html;
+    if (container) container.innerHTML = html;
+    if (modalContainer) modalContainer.innerHTML = html;
 }
 
 function voteForRestaurant(restaurantId) {
@@ -11209,13 +11339,22 @@ function voteForRestaurant(restaurantId) {
         // Vote entfernen
         currentGroupData.votes[restaurantId] = (currentGroupData.votes[restaurantId] || 1) - 1;
         currentGroupData.myVotes = currentGroupData.myVotes.filter(id => id !== restaurantId);
+        showToast('Stimme entfernt');
     } else {
         // Vote hinzufügen
         currentGroupData.votes[restaurantId] = (currentGroupData.votes[restaurantId] || 0) + 1;
         currentGroupData.myVotes.push(restaurantId);
+        showToast('Abgestimmt! 👍');
     }
     
+    // In localStorage speichern
     localStorage.setItem('kmi_group', JSON.stringify(currentGroupData));
+    
+    // Auch in groups-Liste aktualisieren
+    const savedGroups = JSON.parse(localStorage.getItem('kmi_groups') || '{}');
+    savedGroups[currentGroupData.id] = currentGroupData;
+    localStorage.setItem('kmi_groups', JSON.stringify(savedGroups));
+    
     renderGroupVoting();
 }
 
@@ -14506,7 +14645,46 @@ async function logout() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initSupabaseAuth, 1000);
     initNewFeatures(); // Gezeiten, Gamification, etc.
+    checkGroupFromURL(); // Gruppen-Link prüfen
 });
+
+// Prüft ob jemand über einen Gruppen-Link kommt
+function checkGroupFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('group');
+    
+    if (groupId) {
+        // Gruppen-Daten aus localStorage laden
+        const savedGroups = JSON.parse(localStorage.getItem('kmi_groups') || '{}');
+        
+        if (savedGroups[groupId]) {
+            currentGroupData = savedGroups[groupId];
+            setTimeout(() => {
+                openModal('groupVotingModal');
+                renderGroupVoting();
+                showToast('Stimme für dein Lieblingsrestaurant ab! 🗳️');
+            }, 500);
+        } else {
+            // Neue Gruppen-Session erstellen für Teilnehmer
+            currentGroupData = {
+                id: groupId,
+                name: 'Gemeinsam Essen',
+                size: 4,
+                votes: {},
+                myVotes: []
+            };
+            localStorage.setItem('kmi_groups', JSON.stringify({...savedGroups, [groupId]: currentGroupData}));
+            setTimeout(() => {
+                openModal('groupVotingModal');
+                renderGroupVoting();
+                showToast('Willkommen! Stimme ab wo ihr essen wollt! 🍽️');
+            }, 500);
+        }
+        
+        // URL Parameter entfernen (cleaner)
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}
 
 function loginWithEmail(e) {
     e.preventDefault();
@@ -15434,22 +15612,91 @@ function openMapBottomSheet(restaurant) {
 }
 
 // User Location zentrieren
+let userLocationMarker = null;
+
 function centerOnUserLocation() {
     if (navigator.geolocation) {
+        showToast('Suche Standort...', 'info');
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                if (guestMap) {
-                    guestMap.flyTo([lat, lng], 15, { duration: 1 });
+                
+                // Auf Fullscreen Map zentrieren
+                if (fullscreenMap) {
+                    fullscreenMap.flyTo([lat, lng], 15, { duration: 1 });
+                    addUserLocationMarker(fullscreenMap, lat, lng);
                 }
+                
+                // Auch auf kleine Karte
+                if (guestMap) {
+                    guestMap.flyTo([lat, lng], 14, { duration: 1 });
+                    addUserLocationMarker(guestMap, lat, lng);
+                }
+                
                 showToast('Standort gefunden!', 'success');
             },
             (error) => {
                 showToast('Standort nicht verfügbar', 'error');
-            }
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
         );
+    } else {
+        showToast('Standort nicht unterstützt', 'error');
     }
+}
+
+function addUserLocationMarker(map, lat, lng) {
+    // Bestehenden Marker entfernen
+    if (userLocationMarker) {
+        try { userLocationMarker.remove(); } catch(e) {}
+    }
+    
+    // Blauer pulsierender Punkt (wie bei Google Maps)
+    const userIcon = L.divIcon({
+        className: 'user-location-marker',
+        html: `
+            <div style="position: relative; width: 24px; height: 24px;">
+                <div style="
+                    position: absolute;
+                    width: 24px;
+                    height: 24px;
+                    background: rgba(66, 133, 244, 0.2);
+                    border-radius: 50%;
+                    animation: pulse 2s ease-out infinite;
+                "></div>
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 14px;
+                    height: 14px;
+                    background: #4285F4;
+                    border: 3px solid white;
+                    border-radius: 50%;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                "></div>
+            </div>
+        `,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+    
+    userLocationMarker = L.marker([lat, lng], { icon: userIcon, zIndexOffset: 1000 }).addTo(map);
+}
+
+// CSS für Pulsing Animation hinzufügen
+if (!document.getElementById('userLocationStyles')) {
+    const style = document.createElement('style');
+    style.id = 'userLocationStyles';
+    style.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // Vollbild-Karte öffnen
@@ -16620,7 +16867,7 @@ window.addEventListener('appinstalled', () => {
 </div>
 
 <!-- Vollbild Karten Modal -->
-<div class="modal-overlay" id="fullscreenMapModal">
+<div class="modal-overlay" id="fullscreenMapModal" style="z-index: 10001;">
     <div class="modal" style="max-width: 100%; max-height: 100%; width: 100%; height: 100%; margin: 0; border-radius: 0; overflow: hidden;">
         <!-- Header -->
         <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 1001; padding: 16px; background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.8)); backdrop-filter: blur(10px);">
@@ -16642,9 +16889,9 @@ window.addEventListener('appinstalled', () => {
             <!-- Filter Chips -->
             <div style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px;">
                 <button class="map-chip active" onclick="filterMapFullscreen('all', this)" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">Alle</button>
-                <button class="map-chip" onclick="filterMapFullscreen('restaurant', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">🍽️ Restaurants</button>
-                <button class="map-chip" onclick="filterMapFullscreen('cafe', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">☕ Cafés</button>
-                <button class="map-chip" onclick="filterMapFullscreen('available', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">✅ Verfügbar</button>
+                <button class="map-chip" onclick="filterMapFullscreen('restaurant', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">Restaurants</button>
+                <button class="map-chip" onclick="filterMapFullscreen('cafe', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">Cafés</button>
+                <button class="map-chip" onclick="filterMapFullscreen('available', this)" style="background: var(--bg-secondary); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;">Verfügbar</button>
             </div>
         </div>
         
@@ -16746,14 +16993,40 @@ window.addEventListener('appinstalled', () => {
             </div>
             
             <!-- Neue Gruppe erstellen -->
-            <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 16px;">
                 <label class="form-label">Gruppenname</label>
                 <input type="text" class="form-input" id="groupName" placeholder="z.B. Geburtstagsessen Anna">
             </div>
             
-            <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 16px;">
                 <label class="form-label">Anzahl Personen (ca.)</label>
                 <input type="number" class="form-input" id="groupSize" value="6" min="2" max="30">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                <div>
+                    <label class="form-label">Datum</label>
+                    <input type="date" class="form-input" id="groupDate">
+                </div>
+                <div>
+                    <label class="form-label">Uhrzeit</label>
+                    <select class="form-input" id="groupTime">
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00" selected>18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                    </select>
+                </div>
             </div>
             
             <button onclick="createNewGroup()" class="btn btn-primary" style="width: 100%;">
@@ -16766,6 +17039,7 @@ window.addEventListener('appinstalled', () => {
                 <div style="background: var(--primary); color: white; border-radius: 12px; padding: 16px;">
                     <div style="font-weight: 600; margin-bottom: 4px;" id="activeGroupName">Geburtstagsessen</div>
                     <div style="font-size: 13px; opacity: 0.8;" id="activeGroupMembers">3 Teilnehmer</div>
+                    <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;" id="activeGroupDateTime"></div>
                 </div>
                 
                 <!-- Voting -->
@@ -16785,6 +17059,45 @@ window.addEventListener('appinstalled', () => {
 </div>
 
 <!-- Voice-Reservierung Modal -->
+<div class="modal-overlay" id="voiceReservationModal">
+
+<!-- Gruppen-Voting Modal für Teilnehmer -->
+<div class="modal-overlay" id="groupVotingModal">
+    <div class="modal" style="max-width: 480px;">
+        <div class="modal-header">
+            <h2 class="modal-title">Gruppen-Abstimmung</h2>
+            <button class="modal-close" onclick="closeModal('groupVotingModal')">×</button>
+        </div>
+        <div class="modal-body">
+            <!-- Gruppen-Info -->
+            <div style="background: var(--primary); color: white; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px;" id="votingGroupName">Gruppenname</div>
+                <div style="font-size: 14px; opacity: 0.9;" id="votingGroupInfo">6 Personen</div>
+                <div style="font-size: 14px; opacity: 0.9; margin-top: 4px;" id="votingGroupDateTime"></div>
+            </div>
+            
+            <!-- Abstimmung Info -->
+            <div style="text-align: center; margin-bottom: 16px;">
+                <p style="color: var(--text-secondary); font-size: 14px;">Tippe auf dein Lieblingsrestaurant um abzustimmen!</p>
+            </div>
+            
+            <!-- Restaurant Voting Liste -->
+            <div id="groupVotingListModal">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+            
+            <!-- Teilen Button -->
+            <button onclick="shareGroupLink()" class="btn btn-secondary" style="width: 100%; margin-top: 16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="margin-right: 8px;">
+                    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Weitere Freunde einladen
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="voiceReservationModal">
     <div class="modal" style="max-width: 420px;">
         <div class="modal-header">

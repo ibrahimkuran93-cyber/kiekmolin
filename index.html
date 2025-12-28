@@ -4488,7 +4488,7 @@
             <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
                 <a href="#" onclick="openModal('impressumModal'); return false;" style="font-size: 13px; color: var(--slate); text-decoration: none;" data-i18n="impressum">Impressum</a>
                 <a href="#" onclick="openModal('datenschutzModal'); return false;" style="font-size: 13px; color: var(--slate); text-decoration: none;" data-i18n="privacy">Datenschutz</a>
-                <a href="/cdn-cgi/l/email-protection#0c65626a634c676569676163606562226869" style="font-size: 13px; color: var(--slate); text-decoration: none;" data-i18n="contact">Kontakt</a>
+                <a href="#" onclick="openModal('kontaktModal'); return false;" style="font-size: 13px; color: var(--slate); text-decoration: none;" data-i18n="contact">Kontakt</a>
             </div>
             <div style="font-size: 11px; color: var(--slate); opacity: 0.7; max-width: 320px; margin: 0 auto; line-height: 1.5;">
                 Alle Angaben ohne Gewähr. Öffnungszeiten, Verfügbarkeiten und Preise können abweichen. Bitte vor Ort prüfen.
@@ -12152,6 +12152,10 @@ function initNewFeatures() {
     initTides();
     updatePointsDisplay();
     
+    // Wetter für aktuellen Ort laden
+    const currentLoc = APP_DATA.currentLocation || 'Greetsiel';
+    loadWeatherForLocation(currentLoc);
+    
     // Check für Gruppe in URL
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('group');
@@ -16787,7 +16791,7 @@ window.addEventListener('appinstalled', () => {
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">Kontakt</h3>
             <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px;">
-                E-Mail: <a href="/cdn-cgi/l/email-protection#f59c9b939ab59e9c909e989a999c9bdb9190" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="aac3c4ccc5eac1c3cfc1c7c5c6c3c484cecf">[email&#160;protected]</span></a>
+                E-Mail: <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">Verantwortlich für den Inhalt</h3>
@@ -16801,6 +16805,62 @@ window.addEventListener('appinstalled', () => {
             <p style="color: var(--slate); line-height: 1.6; font-size: 13px;">
                 Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
             </p>
+        </div>
+    </div>
+</div>
+
+<!-- Kontakt Modal -->
+<div class="modal-overlay" id="kontaktModal">
+    <div class="modal" style="max-width: 450px;">
+        <div class="modal-header">
+            <h2 class="modal-title">Kontakt</h2>
+            <button class="modal-close" onclick="closeModal('kontaktModal')">×</button>
+        </div>
+        <div class="modal-body">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="36" height="36">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Wir freuen uns auf deine Nachricht!</h3>
+                <p style="color: var(--text-secondary); font-size: 14px;">Fragen, Feedback oder Partnerschaften</p>
+            </div>
+            
+            <div style="background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="20" height="20">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">E-Mail</div>
+                        <a href="mailto:info@kiekmolin.de" style="color: var(--primary); font-weight: 600; text-decoration: none;">info@kiekmolin.de</a>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; background: #25D366; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" fill="white" width="20" height="20">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">WhatsApp</div>
+                        <a href="https://wa.me/4915204132343" target="_blank" style="color: #25D366; font-weight: 600; text-decoration: none;">+49 152 04132343</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">Du bist Restaurant-Besitzer?</p>
+                <button onclick="closeModal('kontaktModal'); openModal('partnerRegisterModal');" class="btn btn-primary" style="width: 100%;">
+                    Partner werden
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -16824,7 +16884,7 @@ window.addEventListener('appinstalled', () => {
                 Kurani Design<br>
                 Waller Weg 37<br>
                 26624 Südbrookmerland<br>
-                E-Mail: <a href="/cdn-cgi/l/email-protection#c7aea9a1a887acaea2acaaa8abaea9e9a3a2" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="a5cccbc3cae5ceccc0cec8cac9cccb8bc1c0">[email&#160;protected]</span></a>
+                E-Mail: <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">3. Welche Daten wir erheben</h3>
@@ -16841,7 +16901,7 @@ window.addEventListener('appinstalled', () => {
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">5. Ihre Rechte</h3>
             <p style="color: var(--slate); line-height: 1.6; margin-bottom: 16px; font-size: 14px;">
-                Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontaktieren Sie uns unter <a href="/cdn-cgi/l/email-protection#ef86818980af84868a848280838681c18b8a" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="264f484049664d4f434d4b494a4f48084243">[email&#160;protected]</span></a>.
+                Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Kontaktieren Sie uns unter <a href="mailto:info@kiekmolin.de" style="color: var(--primary);">info@kiekmolin.de</a>.
             </p>
             
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--dark);">6. Wetter-Daten</h3>

@@ -5014,7 +5014,7 @@
                     </svg>
                     Aktualisieren
                 </button>
-                <button class="dash-btn dash-btn-secondary" onclick="openNewRestaurantModal()" title="Restaurant hinzufügen">
+                <button class="dash-btn dash-btn-secondary" onclick="openModal('addRestaurantModal')" title="Restaurant hinzufügen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
                         <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
@@ -9560,7 +9560,17 @@ function openNewRestaurantModal() {
     
     // Bild-Preview zurücksetzen
     uploadedImageBase64 = null;
+    uploadedImages = []; // Multi-Image Array leeren
     if (typeof clearImagePreview === 'function') clearImagePreview();
+    
+    // Multi-Image Preview leeren
+    const multiPreview = document.getElementById('multiImagePreview');
+    if (multiPreview) multiPreview.innerHTML = '';
+    
+    // Alle Checkboxen zurücksetzen
+    document.querySelectorAll('#addRestaurantForm input[type="checkbox"]').forEach(cb => {
+        if (cb.id !== 'newRestaurantAGBAccepted') cb.checked = false;
+    });
     
     // Modal-Titel für Neu
     const modalTitle = document.querySelector('#addRestaurantModal .modal-title');

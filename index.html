@@ -888,25 +888,18 @@
             display: block;
             max-width: 430px;
             margin: 0 auto;
+            padding: 0;
             min-height: 100vh;
             background: var(--bg-secondary);
             position: relative;
             overflow: hidden;
         }
         
-        /* Desktop: App zentriert, breiter aber noch App-like */
+        /* Desktop: App zentriert */
         @media (min-width: 768px) {
-            body {
-                background: #1a1a1a;
-            }
-            
             .guest-view {
                 max-width: 520px;
-                box-shadow: 0 0 80px rgba(0,0,0,0.3);
-            }
-            
-            .guest-header {
-                padding: 70px 28px 110px;
+                box-shadow: 0 0 80px rgba(0,0,0,0.2);
             }
             
             .bottom-nav {
@@ -923,14 +916,6 @@
             .bottom-nav {
                 max-width: 600px;
             }
-            
-            .guest-header {
-                padding: 80px 32px 120px;
-            }
-            
-            .restaurant-card {
-                padding: 18px;
-            }
         }
 
         .guest-view.hidden {
@@ -940,9 +925,11 @@
         /* Header */
         .guest-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 60px 24px 100px;
+            padding: 50px 24px 100px;
+            padding-top: max(50px, env(safe-area-inset-top, 50px));
             position: relative;
             overflow: hidden;
+            margin: 0;
         }
 
         .guest-header::before {
@@ -2323,6 +2310,8 @@
             #weatherWidget {
                 padding: 24px;
                 border-radius: 20px;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
             }
             
             /* Map größer */
@@ -4126,7 +4115,7 @@
         </div>
 
         <!-- Wetter Widget - Kompakt mit Klick für Details -->
-        <div id="weatherWidget" onclick="openWeatherDetail()" style="margin: 24px 20px 16px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
+        <div id="weatherWidget" onclick="openWeatherDetail()" style="margin: 0 20px 16px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
             <!-- Hintergrund mit Gradient -->
             <div id="weatherBg" style="background: linear-gradient(180deg, #4A90D9 0%, #67B8DE 50%, #8BC4E8 100%); padding: 16px 20px; position: relative;">
                 <div style="display: flex; align-items: center; justify-content: space-between; color: white;">

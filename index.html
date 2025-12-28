@@ -1162,6 +1162,160 @@
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             overflow: hidden;
         }
+        
+        /* Image Gallery Swipe */
+        .card-image-gallery {
+            height: 180px;
+            position: relative;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-slide {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .gallery-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+        
+        .gallery-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transition: all 0.3s;
+        }
+        
+        .gallery-dot.active {
+            width: 18px;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: rgba(0,0,0,0.4);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .card-image-gallery:hover .gallery-nav {
+            opacity: 1;
+        }
+        
+        .gallery-prev { left: 8px; }
+        .gallery-next { right: 8px; }
+        
+        /* Fullscreen Gallery Modal */
+        .fullscreen-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fullscreen-gallery.active {
+            display: flex;
+        }
+        
+        .fullscreen-gallery-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .fullscreen-gallery-image {
+            max-width: 90%;
+            max-height: 80%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .fullscreen-gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .fullscreen-gallery-prev { left: 20px; }
+        .fullscreen-gallery-next { right: 20px; }
+        
+        .fullscreen-gallery-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .fullscreen-gallery-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .fullscreen-gallery-dot.active {
+            width: 24px;
+            border-radius: 10px;
+            background: white;
+        }
 
         .card-image::after {
             content: '';
@@ -8194,11 +8348,25 @@ function renderRestaurants(filter = 'all') {
         
         html += `
             <div class="restaurant-card ${isVisible ? '' : 'hidden'}" data-id="${r.id}" data-cuisine="${r.cuisine}">
-                <div class="card-image" style="background-image: url('${r.image}')">
+                <div class="card-image-gallery" onclick="openImageGallery('${r.id}')">
+                    <div class="gallery-slider" id="slider-${r.id}">
+                        <div class="gallery-slide active" style="background-image: url('${r.image}')"></div>
+                        ${r.images && r.images.length > 0 ? r.images.map(img => `<div class="gallery-slide" style="background-image: url('${img}')"></div>`).join('') : `
+                        <div class="gallery-slide" style="background-image: url('${r.image}')"></div>
+                        <div class="gallery-slide" style="background-image: url('${r.image}')"></div>
+                        `}
+                    </div>
+                    <div class="gallery-dots" id="dots-${r.id}">
+                        <span class="gallery-dot active"></span>
+                        <span class="gallery-dot"></span>
+                        <span class="gallery-dot"></span>
+                    </div>
+                    <div class="gallery-nav gallery-prev" onclick="event.stopPropagation(); slideGallery('${r.id}', -1)">‹</div>
+                    <div class="gallery-nav gallery-next" onclick="event.stopPropagation(); slideGallery('${r.id}', 1)">›</div>
                     <div class="availability-badge ${availabilityClass}">${availabilityText}</div>
                     ${isTrending ? `<div class="trending-badge" style="position: absolute; top: 12px; left: 12px;">🔥 Trending</div>` : ''}
                     ${r.offer ? `<div class="special-badge">${r.offer.discount}</div>` : ''}
-                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${r.id}')">
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${r.id}')">
                         <svg viewBox="0 0 24 24" stroke-width="2">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
@@ -11478,6 +11646,157 @@ function checkAndShowPushModal() {
     }
 }
 
+// ==================== IMAGE GALLERY SWIPE ====================
+let galleryIndexes = {};
+let fullscreenGalleryData = null;
+let fullscreenIndex = 0;
+
+function slideGallery(restaurantId, direction) {
+    const slider = document.getElementById(`slider-${restaurantId}`);
+    const dots = document.getElementById(`dots-${restaurantId}`);
+    if (!slider || !dots) return;
+    
+    const slides = slider.querySelectorAll('.gallery-slide');
+    const totalSlides = slides.length;
+    
+    if (!galleryIndexes[restaurantId]) galleryIndexes[restaurantId] = 0;
+    
+    galleryIndexes[restaurantId] += direction;
+    
+    if (galleryIndexes[restaurantId] >= totalSlides) galleryIndexes[restaurantId] = 0;
+    if (galleryIndexes[restaurantId] < 0) galleryIndexes[restaurantId] = totalSlides - 1;
+    
+    slider.style.transform = `translateX(-${galleryIndexes[restaurantId] * 100}%)`;
+    
+    // Update dots
+    const dotElements = dots.querySelectorAll('.gallery-dot');
+    dotElements.forEach((dot, i) => {
+        dot.classList.toggle('active', i === galleryIndexes[restaurantId]);
+    });
+}
+
+// Touch swipe support
+document.addEventListener('touchstart', handleTouchStart, { passive: true });
+document.addEventListener('touchmove', handleTouchMove, { passive: true });
+document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+let touchStartX = 0;
+let touchEndX = 0;
+let currentSwipeGallery = null;
+
+function handleTouchStart(e) {
+    const gallery = e.target.closest('.card-image-gallery');
+    if (gallery) {
+        touchStartX = e.changedTouches[0].screenX;
+        currentSwipeGallery = gallery.querySelector('.gallery-slider')?.id?.replace('slider-', '');
+    }
+}
+
+function handleTouchMove(e) {
+    touchEndX = e.changedTouches[0].screenX;
+}
+
+function handleTouchEnd(e) {
+    if (!currentSwipeGallery) return;
+    
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+            slideGallery(currentSwipeGallery, 1); // Swipe left = next
+        } else {
+            slideGallery(currentSwipeGallery, -1); // Swipe right = prev
+        }
+    }
+    currentSwipeGallery = null;
+}
+
+// Fullscreen Gallery
+function openImageGallery(restaurantId) {
+    const restaurant = APP_DATA.restaurants.find(r => r.id === restaurantId);
+    if (!restaurant) return;
+    
+    // Bilder sammeln
+    let images = [restaurant.image];
+    if (restaurant.images && restaurant.images.length > 0) {
+        images = images.concat(restaurant.images);
+    } else {
+        // Demo: gleiches Bild 3x
+        images = [restaurant.image, restaurant.image, restaurant.image];
+    }
+    
+    fullscreenGalleryData = {
+        restaurantId,
+        name: restaurant.name,
+        images
+    };
+    fullscreenIndex = galleryIndexes[restaurantId] || 0;
+    
+    renderFullscreenGallery();
+    document.getElementById('fullscreenGalleryModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFullscreenGallery() {
+    document.getElementById('fullscreenGalleryModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function renderFullscreenGallery() {
+    if (!fullscreenGalleryData) return;
+    
+    const img = document.getElementById('fullscreenGalleryImage');
+    const dots = document.getElementById('fullscreenGalleryDots');
+    const name = document.getElementById('fullscreenGalleryName');
+    
+    img.src = fullscreenGalleryData.images[fullscreenIndex];
+    name.textContent = fullscreenGalleryData.name;
+    
+    // Dots rendern
+    let dotsHtml = '';
+    fullscreenGalleryData.images.forEach((_, i) => {
+        dotsHtml += `<span class="fullscreen-gallery-dot ${i === fullscreenIndex ? 'active' : ''}" onclick="goToFullscreenSlide(${i})"></span>`;
+    });
+    dots.innerHTML = dotsHtml;
+}
+
+function slideFullscreenGallery(direction) {
+    if (!fullscreenGalleryData) return;
+    
+    fullscreenIndex += direction;
+    
+    if (fullscreenIndex >= fullscreenGalleryData.images.length) fullscreenIndex = 0;
+    if (fullscreenIndex < 0) fullscreenIndex = fullscreenGalleryData.images.length - 1;
+    
+    renderFullscreenGallery();
+}
+
+function goToFullscreenSlide(index) {
+    fullscreenIndex = index;
+    renderFullscreenGallery();
+}
+
+// Touch swipe für Fullscreen
+let fsGalleryEl = null;
+document.addEventListener('DOMContentLoaded', () => {
+    const fsGallery = document.getElementById('fullscreenGalleryModal');
+    if (fsGallery) {
+        fsGallery.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            fsGalleryEl = 'fullscreen';
+        }, { passive: true });
+        
+        fsGallery.addEventListener('touchend', (e) => {
+            if (fsGalleryEl !== 'fullscreen') return;
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                slideFullscreenGallery(diff > 0 ? 1 : -1);
+            }
+            fsGalleryEl = null;
+        }, { passive: true });
+    }
+});
+
 // ==================== VOICE-RESERVIERUNG ====================
 let voiceRecognition = null;
 let isListening = false;
@@ -11696,11 +12015,24 @@ function displayVoiceResult(persons, time, date, restaurant, cuisine) {
 }
 
 function retryVoice() {
+    if (!voiceRecognition) {
+        if (!initVoiceRecognition()) {
+            showToast('Spracherkennung nicht unterstützt', 'error');
+            return;
+        }
+    }
+    
     document.getElementById('voiceTranscript').textContent = 'Höre zu...';
     document.getElementById('voiceResult').innerHTML = '';
-    voiceRecognition.start();
-    isListening = true;
-    updateVoiceButton();
+    
+    try {
+        voiceRecognition.start();
+        isListening = true;
+        updateVoiceButton();
+    } catch(e) {
+        console.error('Voice error:', e);
+        showToast('Bitte erneut versuchen', 'error');
+    }
 }
 
 // ==================== AR PREVIEW ====================
@@ -17057,9 +17389,6 @@ window.addEventListener('appinstalled', () => {
 </div>
 
 <!-- Voice-Reservierung Modal -->
-<div class="modal-overlay" id="voiceReservationModal">
-
-<!-- Gruppen-Voting Modal für Teilnehmer -->
 <div class="modal-overlay" id="groupVotingModal">
     <div class="modal" style="max-width: 480px;">
         <div class="modal-header">
@@ -17145,6 +17474,18 @@ window.addEventListener('appinstalled', () => {
             </button>
         </div>
     </div>
+</div>
+
+<!-- Fullscreen Image Gallery Modal -->
+<div class="fullscreen-gallery" id="fullscreenGalleryModal">
+    <button class="fullscreen-gallery-close" onclick="closeFullscreenGallery()">×</button>
+    <button class="fullscreen-gallery-nav fullscreen-gallery-prev" onclick="slideFullscreenGallery(-1)">‹</button>
+    <div style="text-align: center;">
+        <p id="fullscreenGalleryName" style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 16px;"></p>
+        <img id="fullscreenGalleryImage" class="fullscreen-gallery-image" src="" alt="Restaurant Bild">
+    </div>
+    <button class="fullscreen-gallery-nav fullscreen-gallery-next" onclick="slideFullscreenGallery(1)">›</button>
+    <div class="fullscreen-gallery-dots" id="fullscreenGalleryDots"></div>
 </div>
 
 <!-- AR Preview Modal -->

@@ -7968,8 +7968,8 @@ async function initSupabase() {
     console.log('Verbinde mit Supabase...');
     
     try {
-        // Test connection und Daten laden - nur Basis-Spalten anfragen
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/restaurants?select=id,name,phone,whatsapp,city,address,latitude,longitude,image_url,rating,review_count,cuisine_type,is_active,is_open&is_active=eq.true`, {
+        // Einfache Query - nur Basis-Spalten
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/restaurants?select=*`, {
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': 'Bearer ' + SUPABASE_KEY
@@ -7977,6 +7977,8 @@ async function initSupabase() {
         });
         
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Supabase Response:', errorText);
             throw new Error('HTTP ' + response.status);
         }
         
@@ -7995,7 +7997,7 @@ async function initSupabase() {
             APP_DATA.restaurants = restaurants.map(r => ({
                 id: r.id,
                 name: r.name || 'Unbekannt',
-                cuisine: Array.isArray(r.cuisine_type) ? r.cuisine_type[0] : (r.cuisine_type || 'deutsch'),
+                cuisine: Array.isArray(r.cuisine_type) ? r.cuisine_type[0] : (r.cuisine_type || 'Restaurant'),
                 rating: r.rating || 4.5,
                 reviewCount: r.review_count || 0,
                 freeTables: 5,
@@ -8003,7 +8005,7 @@ async function initSupabase() {
                 phone: r.phone || '',
                 whatsapp: r.whatsapp || null,
                 address: r.address || r.city || '',
-                city: r.city || 'Greetsiel',
+                city: r.city || 'Ostfriesland',
                 lat: parseFloat(r.latitude) || 53.5021,
                 lng: parseFloat(r.longitude) || 7.0965,
                 image: r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800',
@@ -8018,9 +8020,9 @@ async function initSupabase() {
         
         // Orte aus den Daten laden
         setTimeout(() => {
-            loadLocations();
-            loadCustomLocations();
-            updateLiveStats();
+            if (typeof loadLocations === 'function') loadLocations();
+            if (typeof loadCustomLocations === 'function') loadCustomLocations();
+            if (typeof updateLiveStats === 'function') updateLiveStats();
         }, 500);
         
         showToast(`${APP_DATA.restaurants.length} Restaurants geladen!`, 'success');
